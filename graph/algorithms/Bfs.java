@@ -1,36 +1,46 @@
-class Bfs {
-  public List<Integer> doBfs(int v, List<List<Integer>> adjancency) {
-    List<Integer> bfs = new ArrayList<>();
-    // Have a visited array of size v+1 to accomodate nodes numbered from 1 to v
-    boolean visited[] = new boolean[v+1];
-    
-    for(int i = 1; i <= v; i++) {
-      // If the node in consideration is not visited then do it's bfs
-      if(visited[i] == false) {
-        Queue<Integer> q = new LinkedList<>();
-        q.add(i); // Add the node to Queue
-        visited[i] = true; // Mark the node as visited
-        
-        // Process till the queue is not empty
-        while(!q.isEmpty()) {
-          // Take out the first element from the Queue
-          Integer node = q.poll();
-          // Add it to the bfs list
-          bfs.add(node);
-          
-          // Find the adjacent nodes of the node in consideration
-          for(Integer i : adjacency.get(node)) {
-            // If the node is not visited, Mark it as visited and add to Queue
-            if(visited[i] == false) {
-              visited[i] = true;
-              q.add(i);
-            }
-          }
-        }
-      }
+import java.util.*;
+
+public class Bfs {
+    public static void main(String[] args) {
+        int v = 7;
+        List<List<Integer>> adj = new ArrayList<>();
+        adj.add(Arrays.asList(1,2));
+        adj.add(Arrays.asList(2,1,3,7));
+        adj.add(Arrays.asList(3,2,5));
+        adj.add(Arrays.asList(4,6));
+        adj.add(Arrays.asList(5,3,7));
+        adj.add(Arrays.asList(6,4));
+        adj.add(Arrays.asList(7,2,5));
+        List<Integer> bfs = doBfs(v, adj);
+        bfs.forEach(System.out::println);
     }
-    return bfs;
-  }
+
+    private static List<Integer> doBfs(int v, List<List<Integer>> adj) {
+        boolean[] vis = new boolean[v];
+        List<Integer> res = new ArrayList<>();
+
+        for(int i = 1; i <= v ; i++) {
+            if(!vis[i-1]) {
+                // Do BFS
+                Queue<Integer> q = new LinkedList<>();
+                q.add(i);
+                vis[i-1] = true;
+
+                while (!q.isEmpty()) {
+                    Integer node = q.poll();
+                    res.add(node);
+
+                    for(Integer it : adj.get(node-1)) {
+                        if (!vis[it-1]) {
+                            vis[it-1] = true;
+                            q.add(it);
+                        }
+                    }
+                }
+            }
+        }
+        return res;
+    }
 }
 
 // Time Complexity : O(N+E) : N for visiting all the nodes, E for traversing through adjacent nodes
