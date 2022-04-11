@@ -1,42 +1,87 @@
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
 public class GraphDfs {
     public static void main(String[] args) {
-        int v = 7;
-        List<List<Integer>> adj = new ArrayList<>();
-        adj.add(Arrays.asList(1,2));
-        adj.add(Arrays.asList(2,1,3,7));
-        adj.add(Arrays.asList(3,2,5));
-        adj.add(Arrays.asList(4,6));
-        adj.add(Arrays.asList(5,3,7));
-        adj.add(Arrays.asList(6,4));
-        adj.add(Arrays.asList(7,2,5));
-        List<Integer> result = doDfs(v, adj);
-        result.forEach(System.out::println);
+        List<List<Integer>> oneBasedGraph = createOneBasedGraph(7);
+
+        /*List<Integer> result = doDfs(7, oneBasedGraph);
+        result.forEach(System.out::println);*/
+        doDfsIterative(7, oneBasedGraph);
     }
 
     private static List<Integer> doDfs(int v, List<List<Integer>> adj) {
         ArrayList<Integer> result = new ArrayList<>();
-        boolean[] vis = new boolean[v];
+        boolean[] visited = new boolean[v+1];
+
         for(int i = 1 ; i <= v ; i++) {
-            if(!vis[i-1]) {
-                dfs(i, vis, adj, result);
+            if(!visited[i]) {
+                dfsRecursive(i, visited, adj, result);
             }
         }
         return result;
     }
 
-    private static void dfs(int node, boolean[] vis, List<List<Integer>> adj, ArrayList<Integer> result) {
+    private static void dfsRecursive(int node, boolean[] vis, List<List<Integer>> adj, ArrayList<Integer> result) {
         result.add(node);
-        vis[node-1] = true;
-        for (Integer it : adj.get(node-1)) {
-            if(!vis[it-1]) {
-                dfs(it, vis, adj,result);
+        vis[node] = true;
+
+        for (Integer it : adj.get(node)) {
+            if(!vis[it]) {
+                dfsRecursive(it, vis, adj,result);
             }
         }
     }
+
+    private static void doDfsIterative(int v, List<List<Integer>> adj) {
+        boolean[] vis = new boolean[v+1];
+        List<Integer> result = new ArrayList<>();
+
+        for (int i = 1; i <= v; i++) {
+            if (!vis[i]) {
+                vis[i] = true;
+                Stack<Integer> stack = new Stack<>();
+                stack.push(i);
+
+                while (!stack.isEmpty()) {
+                    Integer node = stack.pop();
+                    result.add(node);
+
+                    for (Integer it : adj.get(node)) {
+                        if (!vis[node]) {
+                            vis[node] = true;
+                            stack.push(it);
+                        }
+                    }
+                }
+            }
+        }
+        result.forEach(System.out::println);
+    }
+
+    private static List<List<Integer>> createOneBasedGraph(int vertices) {
+        List<List<Integer>> adj = new ArrayList<>();
+
+        for (int i = 0; i <= vertices; i++) {
+            adj.add(new ArrayList<>());
+        }
+
+        addEdge(adj, 1, 2);
+        addEdge(adj, 2, 4);
+        addEdge(adj, 2, 7);
+        addEdge(adj, 3, 5);
+        addEdge(adj, 4, 6);
+        addEdge(adj, 6, 7);
+
+        return adj;
+    }
+
+    private static void addEdge(List<List<Integer>> adj, int from, int to) {
+        adj.get(from).add(to);
+    }
 }
+
 // Time Complexity : O(N+E)
 // Space Complexity : O(N+E) + O(N) + O(N)
