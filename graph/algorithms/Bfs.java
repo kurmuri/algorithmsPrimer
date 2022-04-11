@@ -2,46 +2,54 @@ import java.util.*;
 
 public class Bfs {
     public static void main(String[] args) {
-        int v = 7;
-        List<List<Integer>> adj = new ArrayList<>();
-        adj.add(Arrays.asList(1,2));
-        adj.add(Arrays.asList(2,1,3,7));
-        adj.add(Arrays.asList(3,2,5));
-        adj.add(Arrays.asList(4,6));
-        adj.add(Arrays.asList(5,3,7));
-        adj.add(Arrays.asList(6,4));
-        adj.add(Arrays.asList(7,2,5));
-        List<Integer> bfs = doBfs(v, adj);
-        bfs.forEach(System.out::println);
+        List<List<Integer>> oneBasedGraph = createOneBasedGraph(7);
+        doBfs(oneBasedGraph, 7);
     }
 
-    private static List<Integer> doBfs(int v, List<List<Integer>> adj) {
-        boolean[] vis = new boolean[v];
-        List<Integer> res = new ArrayList<>();
+    private static void doBfs(List<List<Integer>> adj, int vertices) {
+        boolean[] visited = new boolean[vertices+1];
+        List<Integer> bfsResult = new ArrayList<>();
 
-        for(int i = 1; i <= v ; i++) {
-            if(!vis[i-1]) {
-                // Do BFS
-                Queue<Integer> q = new LinkedList<>();
-                q.add(i);
-                vis[i-1] = true;
+        for (int i = 1; i <= vertices; i++) {
+            if (!visited[i]) {
+                Queue<Integer> queue = new LinkedList<>();
+                queue.add(i);
+                visited[i] = true;
 
-                while (!q.isEmpty()) {
-                    Integer node = q.poll();
-                    res.add(node);
+                while (!queue.isEmpty()) {
+                    Integer node = queue.poll();
+                    bfsResult.add(node);
 
-                    for(Integer it : adj.get(node-1)) {
-                        if (!vis[it-1]) {
-                            vis[it-1] = true;
-                            q.add(it);
+                    for (Integer neighbour : adj.get(node)) {
+                        if (!visited[neighbour]) {
+                            visited[neighbour] = true;
+                            queue.add(neighbour);
                         }
                     }
                 }
             }
         }
-        return res;
+        bfsResult.forEach(System.out::println);
+    }
+
+    private static List<List<Integer>> createOneBasedGraph(int vertices) {
+        List<List<Integer>> adj = new ArrayList<>();
+
+        for (int i = 0; i <= vertices; i++) {
+            adj.add(new ArrayList<>());
+        }
+
+        addEdge(adj, 1, 2);
+        addEdge(adj, 2, 3);
+        addEdge(adj, 2, 7);
+        addEdge(adj, 3, 5);
+        addEdge(adj, 5, 7);
+        addEdge(adj, 4, 6);
+
+        return adj;
+    }
+
+    private static void addEdge(List<List<Integer>> adj, int from, int to) {
+        adj.get(from).add(to);
     }
 }
-
-// Time Complexity : O(N+E) : N for visiting all the nodes, E for traversing through adjacent nodes
-// Space Complexity : O(N+E) + O(N) + O(N) : Space for adjacency list, Visited Array & the Queue
