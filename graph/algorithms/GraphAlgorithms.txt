@@ -28,6 +28,10 @@ Bipartite Graph DFS/Graph coloring DFS
 Directed graph cycle detection DFS 
   YT -- https://www.youtube.com/watch?v=uzVUw90ZFIg
   GH -- https://github.com/shandilyaCodes/algorithmsPrimer/blob/main/graph/algorithms/DfsDigraphCycleDetection.java
+  
+Directed graph cycle detection BFS (Uses Kahn's algorithm)
+  YT -- https://www.youtube.com/watch?v=V6GxfKDyLBM
+  GH -- https://github.com/shandilyaCodes/algorithmsPrimer/blob/main/graph/algorithms/BfsDigraphCycleDetection.java
 
 TOPO sort DFS
   YT -- https://www.youtube.com/watch?v=Yh6EFazXipA
