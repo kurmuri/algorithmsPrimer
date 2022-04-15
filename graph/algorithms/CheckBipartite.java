@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public class CheckBipartiteBFS {
+public class CheckBipartite {
     public static void main(String[] args) {
         List<List<Integer>> bipartiteGraph = makeBipartiteGraph(10);
         List<List<Integer>> nonBipartiteGraph = makeNonBipartiteGraph(8);
@@ -40,7 +40,7 @@ public class CheckBipartiteBFS {
         return true;
     }
 
-    // Check for the bipartite behavior for a component
+    // Check for the bipartite behavior of a component using BFS traversal
     private static boolean bfsCheck(List<List<Integer>> adj, int node, int[] color) {
         Queue<Integer> queue = new LinkedList<>();
         queue.add(node); // Add the starting node to the queue
@@ -58,6 +58,24 @@ public class CheckBipartiteBFS {
                 } else if (color[it] == color[polled]) { // If the current node is already colored & is the same color as the polled node
                     return false; // Consecutive nodes are same color, thus graph isn't bipartite
                 }
+            }
+        }
+        return true;
+    }
+    
+    // Check for the bipartite behavior of a component using DFS traversal
+    private static boolean dfsCheck(List<List<Integer>> adj, int node, int[] color) {
+        if (color[node] == -1) 
+            color[node] = 1; // If the current node is not colored, color it
+        
+        for (Integer it : adj.get(node)) {
+            if (color[it] == -1) {
+                color[it] = 1 - color[node]; // If the current node is not colored, color it with the opposite color
+                
+                if (!dfsCheck(adj, it, color))
+                    return false; // Call recursive to dfsCheck & return accordingly
+            } else if (color[it] == color[node]) {
+                return false; // If the neighbour node is already colored & is equal to the color of the node color return false 
             }
         }
         return true;
