@@ -6,7 +6,7 @@ import java.util.Queue;
 /**
  * This Algorithm uses the reverse logic of kahn's algorithm to detect a cycle in the Digraph
  */
-public class DetectCycleBFSDigraph {
+public class BfsDigraphCycleDetection {
     public static void main(String[] args) {
         if (isCyclic(9,createDigraphWithCycle())) {
             System.out.println("Graph is cyclic");
