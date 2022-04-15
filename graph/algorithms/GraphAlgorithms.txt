@@ -1,0 +1,30 @@
+Graph General theory 
+  YT -- https://www.youtube.com/watch?v=LCrovIMurxY
+
+BFS traversal
+  YT -- https://www.youtube.com/watch?v=UeE67iCK2lQ 
+  GH -- https://github.com/shandilyaCodes/algorithmsPrimer/blob/main/graph/algorithms/BfsTraversal.java
+
+DFS traversal
+  YT -- https://www.youtube.com/watch?v=uDWljP2PGmU
+  GH -- https://github.com/shandilyaCodes/algorithmsPrimer/blob/main/graph/algorithms/DfsTraversal.java
+
+Undirected graph cycle detection BFS -- https://www.youtube.com/watch?v=A8ko93TyOns
+  YT -- https://www.youtube.com/watch?v=A8ko93TyOns
+  GH -- https://github.com/shandilyaCodes/algorithmsPrimer/blob/main/graph/algorithms/BfsGraphCycleDetection.java
+  
+Undirected graph cycle detection DFS
+  YT -- https://www.youtube.com/watch?v=Y9NFqI6Pzd4
+  GH -- https://github.com/shandilyaCodes/algorithmsPrimer/blob/main/graph/algorithms/DfsGraphCycleDetection.java
+
+Bipartite Graph BFS/Graph coloring BFS
+  YT -- https://www.youtube.com/watch?v=nbgaEu-pvkU
+  GH -- https://github.com/shandilyaCodes/algorithmsPrimer/blob/main/graph/algorithms/CheckBipartite.java
+  
+Bipartite Graph DFS/Graph coloring DFS
+  YT -- https://www.youtube.com/watch?v=uC884ske2uQ
+  GH -- https://github.com/shandilyaCodes/algorithmsPrimer/blob/main/graph/algorithms/CheckBipartite.java
+
+Directed graph cycle detection DFS 
+  YT -- https://www.youtube.com/watch?v=uzVUw90ZFIg
+  GH -- https://github.com/shandilyaCodes/algorithmsPrimer/blob/main/graph/algorithms/DfsDigraphCycleDetection.java
