@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Bfs {
+public class BfsTraversal {
     public static void main(String[] args) {
         List<List<Integer>> oneBasedGraph = createOneBasedGraph(7);
         doBfs(oneBasedGraph, 7);
