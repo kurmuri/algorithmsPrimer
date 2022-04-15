@@ -1,4 +1,3 @@
-import java.awt.font.LineMetrics;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +6,7 @@ import java.util.List;
  * Here we maintain two visited arrays, one for global visited another for local visited dfs
  * More details on this topic here in this video : https://www.youtube.com/watch?v=uzVUw90ZFIg&list=PLgUwDviBIf0rGEWe64KWas0Nryn7SCRWw
  */
-public class DetectCycleDFSDigraph {
+public class DfsDigraphCycleDetection {
     public static void main(String[] args) {
         List<List<Integer>> digraphWithCycle = createDigraphWithCycle();
         List<List<Integer>> digraphWithoutCycle = createDigraphWithoutCycle();
