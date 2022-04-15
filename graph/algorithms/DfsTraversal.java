@@ -3,7 +3,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
-public class GraphDfs {
+public class DfsTraversal {
     public static void main(String[] args) {
         List<List<Integer>> oneBasedGraph = createOneBasedGraph(7);
 
@@ -24,6 +24,7 @@ public class GraphDfs {
         return result;
     }
 
+    // Use stack implicitly via recursion
     private static void dfsRecursive(int node, boolean[] vis, List<List<Integer>> adj, ArrayList<Integer> result) {
         result.add(node);
         vis[node] = true;
@@ -35,6 +36,7 @@ public class GraphDfs {
         }
     }
 
+    // Use stack
     private static void doDfsIterative(int v, List<List<Integer>> adj) {
         boolean[] vis = new boolean[v+1];
         List<Integer> result = new ArrayList<>();
