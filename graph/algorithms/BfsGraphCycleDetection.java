@@ -4,43 +4,20 @@ public class BfsGraphCycleDetection {
 
     public static void main(String[] args) {
 
-        List<List<Integer>> adj = new ArrayList<>();
+        List<List<Integer>> cyclicGraph = createCyclicGraph();
+        List<List<Integer>> acyclicGraph = createAcyclicGraph();
 
-        int v = 4;
-        adj.add(Arrays.asList(1,2));
-        adj.add(Arrays.asList(0,2));
-        adj.add(Arrays.asList(0,1));
-        adj.add(Collections.emptyList());
+        if (isCyclic(11, cyclicGraph)) {
+            System.out.println("Graph is cyclic");
+        } else {
+            System.out.println("Graph is acyclic");
+        }
 
-        // ===================================
-        // An undirected graph with a Cycle ||
-        // ===================================
-        /*int v = 11;
-        adj.add(Collections.singletonList(1)); //0
-        adj.add(Arrays.asList(0,3)); //1
-        adj.add(Collections.singletonList(4)); //2
-        adj.add(Collections.singletonList(1)); //3
-        adj.add(Arrays.asList(2,9,5)); //4
-        adj.add(Arrays.asList(6,4)); //5
-        adj.add(Arrays.asList(5,7)); //6
-        adj.add(Arrays.asList(6,8,10)); //7
-        adj.add(Arrays.asList(7,9)); //8
-        adj.add(Arrays.asList(4,8)); //9
-        adj.add(Collections.singletonList(7)); //10*/
-
-        // ====================================
-        // An undirected graph with no Cycle ||
-        // ====================================
-        /*int v = 7;
-        adj.add(Collections.singletonList(1)); // Nodes adjacent to the 0th Node
-        adj.add(Arrays.asList(0,2)); // Nodes adjacent to the 1st Node
-        adj.add(Arrays.asList(1,4)); // Nodes adjacent to the 2nd Node
-        adj.add(Collections.singletonList(5)); // Nodes adjacent to the 3rd Node
-        adj.add(Arrays.asList(2,6)); // // Nodes adjacent to the 4th Node
-        adj.add(Collections.singletonList(3)); // Nodes adjacent to the 5th Node
-        adj.add(Collections.singletonList(4)); // Nodes adjacent to the 6th Node*/
-
-        System.out.println(isCyclic(v, adj)); // Nodes adjacent to the 7th Node
+        if (isCyclic(3, acyclicGraph)) {
+            System.out.println("Graph is cyclic");
+        } else {
+            System.out.println("Graph is acyclic");
+        }
     }
 
     private static boolean isCyclic(int v, List<List<Integer>> adj) {
@@ -75,6 +52,44 @@ public class BfsGraphCycleDetection {
             }
         }
         return false;
+    }
+
+    private static List<List<Integer>> createCyclicGraph() {
+        List<List<Integer>> adj = new ArrayList<>();
+
+        for (int i = 0; i < 11; i++) {
+            adj.add(new ArrayList<>());
+        }
+
+        addEdge(adj, 0, 1);
+        addEdge(adj, 1, 3);
+        addEdge(adj, 2, 4);
+        addEdge(adj, 4, 5);
+        addEdge(adj, 4, 9);
+        addEdge(adj, 5, 6);
+        addEdge(adj, 6, 7);
+        addEdge(adj, 9, 8);
+        addEdge(adj, 8, 7);
+        addEdge(adj, 7, 10);
+
+        return adj;
+    }
+
+    private static List<List<Integer>> createAcyclicGraph() {
+        List<List<Integer>> adj = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            adj.add(new ArrayList<>());
+        }
+
+        addEdge(adj, 0, 1);
+        addEdge(adj, 1, 2);
+
+        return adj;
+    }
+
+    private static void addEdge(List<List<Integer>> adj, int from, int to) {
+        adj.get(from).add(to);
     }
 }
 
