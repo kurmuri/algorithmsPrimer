@@ -45,4 +45,7 @@ Find the shortest path from a source to all other nodes in an undirected graph
   YT -- https://www.youtube.com/watch?v=hwCWi7-bRfI
   GH -- https://github.com/shandilyaCodes/algorithmsPrimer/blob/main/graph/algorithms/ShortestPathUnitWeightGraph.java
   
-  
+Find the shortest path from source to all other nodes in a weighted DAG
+  YT -- https://www.youtube.com/watch?v=CrxG4WJotgg
+  GH -- https://github.com/shandilyaCodes/algorithmsPrimer/blob/main/graph/algorithms/ShortestPathInDag.java
+
