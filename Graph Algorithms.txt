@@ -1,0 +1,674 @@
+=================================================================================================================
+1
+=================================================================================================================
+// DFS
+class Solution {
+	public List<Integer> dfs(int v, List<List<Integer>> adj) {
+		boolean[] vis = new boolean[v];
+		List<Integer> res = new ArrayList<>();
+
+		for(int i = 0; i < v; i++) {
+			if(!vis[i]) {
+				dfsHelper(i, vis, adj, res);
+			}
+		}
+	}
+
+	private void dfsHelper(int node, boolean[] vis, List<List<Integer>> adj, List<Integer> res) {
+		vis[node] = true;
+		res.add(node);
+
+		for(Integer it : adj.get(node)) {
+			if(!vis[it]) {
+				dfsHelper(it, vis, adj, res);
+			}
+		}
+	}
+}
+
+=================================================================================================================
+2
+=================================================================================================================
+// BFS
+class Solution {
+	public List<Integer> bfs(int v, List<List<Integer>> adj) {
+		boolean[] vis = new boolean[v];
+		List<Integer> res = new ArrayList<>();
+
+		for(int i = 0; i < v; i++) {
+			if(!vis[i]) {
+				Queue<Integer> q = new LinkedList<>();
+				q.add(i);
+				vis[i] = true;
+
+				while(!q.isEmpty()) {
+					Integer polled = q.poll();
+					res.add(polled);
+
+					for(Integer it : adj.get(polled)) {
+						if(!vis[it]) {
+							q.add(it);
+							vis[it] = true;
+						}
+					}
+				}
+			}
+		}
+		return res;
+	}
+}
+
+=================================================================================================================
+3
+=================================================================================================================
+// Non Directed graph cycle detection using DFS
+class Solution {
+	public boolean hasCycle(int v, List<List<Integer>> adj) {
+		boolean[] vis = new boolean[v];
+
+		for(int i = 0; i < v; i++) {
+			if(!vis[i]) {
+				if(dfsCycleCheck(i, -1, vis, adj)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private boolean dfsCycleCheck(int node, int parent, boolean[] vis, List<List<Integer>> adj) {
+		vis[node] = true;
+
+		for(Integer it : adj.get(node)) {
+			if(!vis[it]) {
+				if(dfsCycleCheck(it, node, vis, adj)) {
+					return true;
+				}
+			} else if (it != parent) {
+				return true;
+			}
+		}
+		return false;
+	}
+}
+
+=================================================================================================================
+4
+=================================================================================================================
+// Directed Graph cycle detection using DFS
+class Solution {
+	public boolean hasCycle(int v, List<List<Integer>> adj) {
+		boolean[] vis = new boolean[v];
+		boolean[] dfsVis = new boolean[v];
+
+		for(int i = 0; i < v; i++) {
+			if(!vis[i]) {
+				if(dfsCycleCheck(i, vis, dfsVis, adj)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private boolean dfsCycleCheck(int node, boolean[] vis, boolean[] dfsVis, List<List<Integer>> adj) {
+		vis[node] = true;
+		dfsVis[node] = true;
+
+		for(Integer it : adj.get(node)) {
+			if(!vis[it]) {
+				if(dfsCycleCheck(it, vis, dfsVis, adj)) {
+					return true;
+				}
+			} else if(dfsVis[it]) {
+				return true;
+			}
+		}
+
+		dfsVis[node] = false;
+		return false;
+	}
+}
+
+=================================================================================================================5
+=================================================================================================================
+// Topo sort DFS
+class Solution {
+	public List<Integer> findTopo(int v, List<List<Integer>> adj) {
+		boolean[] vis = new boolean[v];
+		Stack<Integer> stack = new Stack<>();
+		List<Integer> res = new ArrayList<>();
+
+		for(int i = 0; i < v; i++) {
+			if(!vis[i]) {
+				topoDfsUtil(i, vis, stack, adj);
+			}
+		}
+
+		while(!stack.isEmpty()) {
+			res.add(stack.pop());
+		}
+		return res;
+	}
+
+	private void topoDfsUtil(int node, boolean[] vis, Stack<Integer> stack, List<List<Integer>> adj) {
+		vis[node] = true;
+
+		for(Integer it : adj.get(node)) {
+			if(!vis[it]) {
+				topoDfsUtil(it, vis, stack, adj);
+			}
+		}
+		stack.push(node);
+	}
+}
+
+=================================================================================================================
+6
+=================================================================================================================
+// DFS Bipartite Graph / Graph coloring
+class Solution {
+	public boolean isBipartite(int v, List<List<Integer>> adj) {
+		int[] colorArr = new int[v];
+
+		for(int i = 0; i < v; i++) {
+			colorArr[i] = -1;
+		}
+
+		for(int i = 0; i < v; i++) {
+			if(colorArr[i] == -1) {
+				if(!bipUtil(i, 0, colorArr, adj)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	private boolean bipUtil(int node, int color, int[] colorArr, List<List<Integer>> adj) {
+		colorArr[node] = color;
+
+		for(Integer it : adj.get(node)) {
+			if(colorArr[it] != -1) {
+				if(!bipUtil(it, 1-color, colorArr)) {
+					return false;
+				}
+			} else if(colorArr[it] == color) {
+				return false;
+			}
+		}
+		return true;
+	}
+}
+
+=================================================================================================================
+7
+=================================================================================================================
+// [SSSP] : BFS to find the SSSP in graph with unit edge weights in non directed graph
+class Solution {
+	public void shortestPath(int v, List<List<Integer>> adj, int source) {
+		int[] distArr = new int[v];
+		for(int i = 0; i < v; i++) {
+			dist[i] = Integer.MAX_VALUE;
+		}
+
+		Queue<Integer> q = new LinkedList<>();
+		distArr[src] = 0;
+		q.add(src);
+
+		while(!q.isEmpty()) {
+			int polled = q.poll();
+
+			for(Integer it : adj.get(polled)) {
+				if(distArr[it] > distArr[node] + 1) {
+					distArr[it] = distArr[node] + 1;
+					q.add(it);
+				}
+			}
+		}
+		// Print dist array
+	}
+}
+
+=================================================================================================================
+8
+=================================================================================================================
+// [SSSP] : Dijkstra finds SSSP in weighted DG and non DG with non negative cycle
+class Node {
+	private final int node;
+	private final int weight;
+
+	// Constructors and getters
+}
+
+class Dijsktra {
+	public void dijSSP(int v, int source, List<List<Integer>> adj) {
+		int[] distance = new int[v];
+		for(int i = 0; i < v; i++) {
+			distance[i] = Integer.MAX_VALUE;
+		}
+
+		distance[source] = 0;
+		Queue<Node> q = new PriorityQueue<>(Comparator.comparingInt(Node::getWeight));
+		q.add(new Node(source, 0));
+
+		while(!q.isEmpty()) {
+			Node node = q.poll();
+
+			for(Node cur : adj.get(node)) {
+				if(distance[cur.getNode()] > distance[node.getNode()] + cur.getWeight()) {
+					distance[cur.getNode()] = distance[node.getNode()] + cur.getWeight();
+					q.add(new Node(cur.getNode(), distance[cur.getNode()]));
+				}
+			}
+		}
+		// Print the distance array
+	}
+}
+
+=================================================================================================================
+9
+=================================================================================================================
+// [SSSP] : Same as Dijkstra, however, exits when a negative weight cycle is detected, else works as Dijkstra
+class Node {
+	private final int from;
+	private final int to;
+	private final int weight;
+
+	// Constructors and getters
+}
+
+
+class Solution {
+	public void bellmanFord(int v, int source, List<Node> adj) {
+		boolean flag = false;
+		int[] dist = new int[v];
+		
+		for(int i = 0; i < v; i++) {
+			dist[i] = Integer.MAX_VALUE;
+		}
+
+		dist[src] = 0;
+
+		for(int i = 0; i < v; i++) {
+			for(Node node : adj) {
+				if(dist[node.getU()] + node.getWeight() < distance[node.getV()]) {
+					dist[node.getV()] = dis[node.getU()] + node.getWeight();
+				}
+			}
+		}
+
+		for(Node node : adj) {
+			if(dist[node.getU()] + node.getWeight() < dist[node.getV()]) {
+				flag = false;
+				sout("Neg weight cycle detected!");
+				break;
+			}
+		}
+
+		if(!flag) {
+			// Print the distance array
+		}
+	}
+}
+
+=================================================================================================================
+10
+=================================================================================================================
+// All Pair Shortest Path : Floyd Warshall
+// SC : Constant
+// TC : O(n3)
+// Note : Dij can be used to find the all pair shortest path by applying DIJ on each node individually, and the 
+// TC would be much better, i.e., O(v*E*logV) which is better than the O(n3)
+// However, Dij can't detect negative weight cycles thus, Floyd warshall could help in the cases of neg weights
+
+class Solution {
+	public void floydWarshall(int[][] adj) {
+		int n = adj.length;
+
+		for(int i = 0; i < n; i++) {
+			for(int j = 0; j < n; j++) {
+				if(adj[i][j] == -1) {
+					adj[i][j] = (int) (1e9);
+				}
+				if(i == j) {
+					adj[i][j] = 0;
+				}
+			}
+		}
+
+		for(int i = 0; i < n; i++) {
+			for(int j = 0; j < n; j++) {
+				for(int k = 0; k < n; k++) {
+					adj[j][k] = Math.min(adj[j][k], adj[j][i] + adj[i][k]);
+				}
+			}
+		}
+
+		for(int i = 0; i < n; i++) {
+			if(adj[i][i] < 0) {
+				sout("Negative cycle weight detected!");
+				break;
+			}
+		}
+
+		// Print the matrix
+	}
+}
+
+=================================================================================================================
+11
+=================================================================================================================
+// Disjoint sets and Union
+// TC for findParent and Union is O(4 alpha), effectively, it's constant time
+// SC complexity would be O(n) for the array usage
+
+class DSU {
+	int[] parent = new int[1000];
+	int[] rank = new int[1000];
+
+	// Mark all the nodes parent of themselves and init their rank as 0
+	void makeSet() {
+		for(int i = 0; i < n; i++) {
+			parent[i] = i;
+			rank[i] = 0;
+		}
+	}
+
+	int findParent(int node) {
+		// Node is the parent of itself
+		if(node == parent[node]) {
+			return node;
+		}
+
+		// Recursively call findParent and do the path compression
+		return parent[node] = findParent(parent[node]);
+	}
+
+	void union(int u, int v) {
+		u = findParent(u);
+		v = findParent(v);
+
+		if(rank[u] < rank[v]) {
+			parent[u] = v;
+		} else if(rank[u] > rank[v]) {
+			parent[v] = u;
+		} else {
+			parent[v] = u;
+			rank[u]++;
+		}
+	}
+}
+
+=================================================================================================================
+12
+=================================================================================================================
+// [MST] : Prim's
+// TC : O(n log n)
+// SC : O(n)
+
+class Node {
+	int node;
+	int weight;
+
+	// Constructors & Getters
+}
+
+class Solution {
+	private static void prims(List<List<Node>> adj, int n) {
+        int[] dist = new int[n];
+        int[] parent = new int[n];
+        boolean[] mstSet = new boolean[n];
+
+        for(int i = 0; i < n; i++) {
+            dist[i] = Integer.MAX_VALUE;
+            mstSet[i] = false;
+            parent[i] = -1;
+        }
+
+        dist[0] = 0;
+
+        Queue<Node> pq = new PriorityQueue<>(Comparator.comparingInt(Node::getWeight));
+        pq.add(new Node(0, dist[0]));
+
+        for(int i = 0; i < n; i++) {
+            int polled = pq.poll().getNode();
+            mstSet[polled] = true;
+
+            for(Node node : adj.get(polled)) {
+                if(!mstSet[node.getNode()] && node.getWeight() < dist[node.getNode()]) {
+                    parent[node.getNode()] = polled;
+                    dist[node.getNode()] = node.getWeight();
+                    pq.add(new Node(node.getNode(), dist[node.getNode()]));
+                }
+            }
+        }
+
+        for(int i = 1; i < n; i++) {
+            System.out.println(parent[i] + " - " + i);
+        }
+    }
+}
+
+=================================================================================================================
+13
+=================================================================================================================
+// [MST] : Kruskal
+
+class Node {
+	private final int u;
+	private final int v;
+	private final int weight;
+
+	// Constructors & Getters
+}
+
+class Solution {
+	public void kruskal(List<Node> adj, int n) {
+		adj.sort(Comparator.comparingInt(Node::getWeight));
+		int[] parent = new int[n];
+		int[] rank = new int[n];
+
+		for(int i = 0; i < n; i++) {
+			parent[i] = i;
+			rank[i] = 0;
+		}
+
+		int mstCost = 0;
+		List<Node> mst = new ArrayList<>();
+
+		for(Node node : adj) {
+			if(findParent(node.getU(), parent) != findParent(node.getV(), parent)) {
+				mstCost += node.getWeight();
+				mst.add(node);
+				union(node.getU(), node.getV(), parent, rank);
+			}
+		}
+
+		System.out.println("Mst cost : " + mstCost);
+		System.out.println("Mst is :");
+
+		for(Node node : mst) {
+			sout(node.getU() + " - " + node.getV());
+		}
+	}
+
+	private int findParent(int u, int[] parent) {
+		if(u == parent[u])
+			return u;
+		return parent[u] = findParent(parent[u], parent);
+	}
+
+	private void union(int u, int v, int[] parent, int[] rank) {
+		u = findParent(u, parent);
+		v = findParent(v, parent);
+
+		if(rank[u] > rank[v]) {
+			parent[v] = u;
+		} else if(rank[u] < rank[v]) {
+			parent[u] = v;
+		} else {
+			parent[v] = u;
+			rank[u]++;
+		}
+	}
+}
+
+=================================================================================================================
+14
+=================================================================================================================
+// Kosaraju to find the SCC
+
+class Solution {
+	public void findScc(List<List<Integer>> adj, int n) {
+		Stack<Integer> stack = new Stack<>();
+		boolean[] vis = new boolean[v];
+		List<List<Integer>> transpose = new ArrayList<>();
+
+		for(int i = 0; i < n; i++) {
+			transpose.add(new ArrayList<>());
+		}
+
+		for(int i = 0; i < n; i++) {
+			if(!vis[i]) {
+				dfsForward(adj, i, stack, vis);
+			}
+		}
+
+		transpose(adj, transpose, n);
+
+		Arrays.fill(vis, false);
+
+		while(!stack.isEmpty()) {
+			Integer popped = stack.pop();
+			if(!vis[popped]) {
+				dfsReverse(tranpose, popped, vis);
+				sout("");
+			}
+		}
+	}
+
+	private void dfsForward(List<List<Integer>> adj, int node, Stack<Integer> stack, boolean[] vis) {
+		vis[node] = true;
+
+		for(Integer it : adj.get(node)) {
+			if(!vis[it]) {
+				dfsForward(adj, it, stack, vis);
+			}
+		}
+		stack.push(node);
+	}
+
+	private void transpose(List<List<Integer>> adj, List<List<Integer>> transpose, int n) {
+		for(int i = 0; i < n; i++) {
+			for(Integer it : adj.get(i)) {
+				transpose.get(it).add(i);
+			}
+		}
+	}
+
+	private void dfsReverse(List<List<Integer>> transpose, int node, boolean[] vis) {
+		sout(node + "-");
+		vis[node] = true;
+
+		for(Integer it : transpose.get(node)) {
+			if(!vis[it]) {
+				dfsReverse(transpose, it, vis);
+			}
+		}
+	}
+}
+
+=================================================================================================================
+15
+=================================================================================================================
+// Articulation point using Tarjan's Algorithm
+class Solution {
+	public void findArticulationPoint(List<List<Integer>> adj, int n) {
+		boolean[] vis = new boolean[n];
+		int[] disc = new int[n];
+		int[] low = new int[n];
+		boolean[] isArticulation = new boolean[n];
+
+		int timer = 0;
+		for(int i = 0; i < n; i++) {
+			if(!vis[i]) {
+				dfs(i, -1, vis, disc, low, adj, timer, isArticulation);
+			}
+		}
+
+		for(int i = 0; i < n; i++) {
+			if(isArticulation[i]) {
+				sout(i);
+			}
+		}
+	}
+
+	private void dfs(int node, int parent, boolean[] vis, int[] disc, int[] low, List<List<Integer> adj, int timer, boolean[] isArticulation) {
+		vis[node] = true;
+		disc[node] = low[node] = timer++;
+		int child = 0;
+
+		for(Integer it : adj.get(node)) {
+			if(it == parent)
+				continue;
+
+			if(!vis[it]) {
+				dfs(it, node, vis, disc, low, adj, timer, isArticulation);
+				low[node] = Math.min(low[node], low[it]);
+
+				if(low[it] >= disc[node] && parent != -1) {
+					isArticulation[node] = true;
+				}
+				child++;
+			} else {
+				low[node] = Math.min(low[node], disc[it]);
+			}
+		}
+		if(parent != -1 && child > 1)
+			isArticulation[node] = true;
+	}
+}
+
+=================================================================================================================
+16
+=================================================================================================================
+// Bridges in Graph using Tarjan's Algorithm
+class Solution {
+	public void findCutEdges(List<List<Integer>> adj, int n) {
+		boolean[] vis = new boolean[n];
+		int[] disc = new int[n];
+		int[] low = new int[n];
+
+		int timer = 0;
+
+		for(int i = 0; i < n; i++) {
+			if(!vis[i]) {
+				dfs(i, -1, vis, disc, low, adj, timer);
+			}
+		}
+	}
+
+	private void dfs(int node, int parent, boolean[] vis, int[] disc, int[] low, List<List<Integer>> adj, int timer) {
+		vis[node] = true;
+		disc[node] = low[node] = timer++;
+
+		for(Integer it : adj.get(node)) {
+			if(it == parent)
+				continue;
+
+			if(!vis[it]) {
+				dfs(it, node, vis, dis, low, adj, timer);
+				low[node] = Math.min(low[node], low[it]);
+
+				if(low[it] > disc[node]) {
+					sout(it + "-" + node);
+				}
+			} else {
+				low[node] = Math.min(low[node], disc[it]);
+			}
+		}
+	}
+}
+============================================================================================================================================
+============================================================================================================================================
